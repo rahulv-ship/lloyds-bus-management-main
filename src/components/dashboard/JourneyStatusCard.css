@@ -1,0 +1,120 @@
+.journey-card {
+  min-height: 200px;
+}
+
+/* ===== Loading skeleton ===== */
+.journey-card--loading {
+  background: linear-gradient(
+    90deg,
+    #fee2e2 25%,
+    #fecaca 37%,
+    #fee2e2 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+/* ===== Active card — light red / rose theme ===== */
+.journey-card--active {
+  background:
+    radial-gradient(
+      120% 100% at 0% 0%,
+      rgba(254, 202, 202, 0.75) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      135deg,
+      #ef4444;5f5 0%,
+      #ffe4e6 100%
+    );
+  color: #7f1d1d;                          /* red-900 base text */
+  border: 1px solid rgba(248, 113, 113, 0.32);
+  box-shadow:
+    0 10px 26px -18px rgba(185, 28, 28, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Eyebrow */
+.journey-card__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #b91c1c;                          /* red-700 */
+  margin-bottom: var(--space-2);
+}
+
+/* Route hero */
+.journey-card__route {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-5);
+  color: #7f1d1d;                          /* red-900 */
+}
+
+.journey-card__route-line {
+  color: #ef4444;                          /* red-500 */
+  display: flex;
+  align-items: center;
+}
+
+/* Detail grid */
+.journey-card__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.journey-card__grid > div {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.journey-card__grid svg {
+  margin-top: 2px;
+  color: #ef4444;                          /* red-500 icons */
+  flex-shrink: 0;
+}
+
+.journey-card__grid b {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: #b91c1c;                          /* red-700 labels */
+  margin-bottom: 2px;
+  letter-spacing: 0.02em;
+}
+
+.journey-card__grid span {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #7f1d1d;                          /* red-900 values */
+}
+
+/* CTA button */
+.journey-card .btn--secondary {
+  background: #ef4444;
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #b91c1c;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.journey-card .btn--secondary:hover {
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #991b1b;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+  .journey-card__grid {
+    grid-template-columns: 1fr;
+  }
+}

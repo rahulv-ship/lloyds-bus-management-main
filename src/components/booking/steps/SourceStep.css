@@ -1,0 +1,34 @@
+.source-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+.source-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  transition: border-color var(--duration-fast) var(--ease-standard), transform var(--duration-fast);
+}
+
+.source-option:hover {
+  border-color: var(--color-brand-primary);
+  transform: translateY(-1px);
+}
+
+.source-option svg {
+  color: var(--color-brand-accent);
+}
+
+.source-option.is-selected {
+  border-color: var(--color-brand-primary);
+  background: var(--color-info-soft);
+  color: var(--color-brand-primary);
+}

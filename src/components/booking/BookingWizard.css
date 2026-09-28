@@ -1,0 +1,74 @@
+.booking-page { display: grid; gap: var(--space-5); }
+.booking-hero { display: flex; align-items: center; justify-content: space-between; gap: var(--space-5); padding: 28px var(--space-8); border-radius: var(--radius-xl); color: #fff; background: linear-gradient(120deg, var(--color-brand-ink), var(--color-brand-primary)); box-shadow: var(--shadow-md); }
+.booking-hero h2 { color: #fff; margin: 4px 0 6px; }.booking-hero p { color: rgba(255,240,240,.76); }
+.booking-hero__eyebrow { color: var(--color-brand-accent-soft); font-weight: 700; font-size: var(--text-xs); letter-spacing: .12em; text-transform: uppercase; }
+.booking-hero__icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; color: var(--color-brand-accent); background: var(--color-glass-subtle); }
+.booking-wizard, .booking-buses { padding: 28px; }
+.booking-identity{display:flex;align-items:center;gap:10px;margin-bottom:22px;padding:12px 14px;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-sunken)}.booking-identity>svg{color:var(--color-brand-primary)}.booking-identity div{display:grid;gap:1px}.booking-identity span{font-size:var(--text-xs);color:var(--color-text-tertiary)}.booking-identity b{font-size:var(--text-sm)}.booking-identity small{margin-left:auto;color:var(--color-brand-primary);font-size:var(--text-xs);font-weight:700}
+.booking-wizard__section-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-5); }
+.booking-wizard__section-head > div { display: flex; align-items: center; gap: var(--space-3); }.booking-wizard__section-head p { font-size: var(--text-sm); }
+.booking-wizard__step { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--color-info-soft); color: var(--color-brand-primary); font: 700 var(--text-sm) var(--font-mono); }
+.booking-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.booking-field { display: grid; gap: var(--space-2); font-size: var(--text-sm); font-weight: 700; color: var(--color-text-secondary); }.booking-field > span { display: flex; align-items: center; gap: 6px; }.booking-field svg { color: var(--color-brand-primary); }
+.booking-field select { appearance: none; min-height: 48px; width: 100%; padding: 0 38px 0 14px; border: 1px solid var(--color-border-strong); border-radius: var(--radius-md); background: var(--color-surface); color: var(--color-text-primary); }.booking-field select:disabled { cursor: not-allowed; background: var(--color-surface-sunken); color: var(--color-text-tertiary); }
+.booking-field input { min-height:48px;width:100%;padding:0 14px;border:1px solid var(--color-border-strong);border-radius:var(--radius-md);background:var(--color-surface);color:var(--color-text-primary); }
+.booking-calendar { margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--color-border); }.booking-buses .bus-step__grid { margin-top: var(--space-5); }
+.booking-submit { position: sticky; bottom: var(--space-4); z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-4) var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--color-surface) 92%, transparent); backdrop-filter: blur(14px); box-shadow: var(--shadow-md); }.booking-submit div { display: grid; gap: 2px; }.booking-submit span { color: var(--color-text-secondary); font-size: var(--text-sm); }
+.special-booking .booking-hero{background:radial-gradient(circle at 88% 12%,var(--color-glass-subtle),transparent 27%),linear-gradient(120deg,var(--color-brand-ink),var(--color-brand-primary));}.special-booking__employee{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;margin:0 0 24px;padding:18px;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:var(--color-surface-sunken)}.special-booking__employee-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:13px;color:var(--color-brand-primary);background:var(--color-info-soft)}.special-booking__employee-copy b{display:block;font-family:var(--font-display)}.special-booking__employee-copy span{font-size:var(--text-xs);color:var(--color-text-secondary)}.special-booking__employee-fields{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width: 720px) { .booking-fields,.special-booking__employee-fields { grid-template-columns: 1fr; }.booking-wizard__section-head { display: grid; }.booking-hero, .booking-submit { align-items: flex-start; flex-direction: column; }.booking-submit button { width: 100%; justify-content: center; }.booking-wizard, .booking-buses { padding: var(--space-5); } }
+
+/* =========================================================
+   Booking submit — blue primary button
+   ========================================================= */
+
+.booking-submit .btn--primary {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow:
+    0 10px 24px -12px rgba(37, 99, 235, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.booking-submit .btn--primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  border-color: #1e40af;
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 28px -12px rgba(37, 99, 235, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.booking-submit .btn--primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow:
+    0 6px 14px -10px rgba(37, 99, 235, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.booking-submit .btn--primary:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.booking-submit .btn--primary:disabled {
+  background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+  border-color: #60a5fa;
+  color: rgba(255, 255, 255, 0.9);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+/* Loading state — keep the spinner visible */
+.booking-submit .btn--primary.is-loading,
+.booking-submit .btn--primary[aria-busy="true"] {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  border-color: #1d4ed8;
+  color: #ffffff;
+}

@@ -1,0 +1,109 @@
+.sidebar {
+  width: var(--sidebar-width);
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.sidebar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
+}
+.sidebar__logo { width: 188px; height: auto; }
+
+.sidebar__mark {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: var(--color-brand-primary);
+  color: var(--color-glass-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidebar__brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.sidebar__brand-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-tertiary);
+}
+
+.sidebar__route {
+  position: relative;
+  padding-left: var(--space-2);
+}
+
+.sidebar__route-line {
+  position: absolute;
+  left: 20px;
+  top: 22px;
+  bottom: 22px;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.sidebar__route ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.sidebar__stop {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  transition: background var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.sidebar__stop:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.sidebar__dot {
+  position: relative;
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-border-strong);
+  flex-shrink: 0;
+  margin-left: 2px;
+  transition: background var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.sidebar__stop.is-active {
+  color: var(--color-brand-primary);
+  background: var(--color-info-soft);
+}
+
+.sidebar__stop.is-active .sidebar__dot {
+  background: var(--color-brand-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-brand-accent) 24%, transparent);
+}
+
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+}

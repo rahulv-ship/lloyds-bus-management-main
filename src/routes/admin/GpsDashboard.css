@@ -1,0 +1,99 @@
+.gps-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gps-map {
+  width: 100%;
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-sunken);
+  overflow: hidden;
+}
+
+.gps-map__placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  min-height: 220px;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  padding: var(--space-4);
+}
+
+.gps-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.gps-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gps-table th {
+  text-align: left;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--color-text-tertiary);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gps-table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  vertical-align: middle;
+}
+
+.gps-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.gps-status--active {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.gps-status--inactive {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.gps-status--breakdown {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.gps-status--under_maintenance {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.gps-location {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.gps-empty {
+  padding: var(--space-4);
+  text-align: center;
+  color: var(--color-text-tertiary);
+}

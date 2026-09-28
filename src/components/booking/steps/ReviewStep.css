@@ -1,0 +1,92 @@
+.review-ticket {
+  background: linear-gradient(135deg, var(--color-brand-ink) 0%, var(--color-brand-primary) 140%);
+  color: #ef4444;;
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  position: relative;
+}
+
+.review-ticket__row--route {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.review-ticket__row--route svg {
+  color: var(--color-brand-accent);
+}
+
+.review-ticket__perforation {
+  height: 1px;
+  margin: var(--space-5) 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--color-glass) 0,
+    var(--color-glass) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+}
+
+.review-ticket__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.review-ticket__grid > div {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.review-ticket__grid svg {
+  margin-top: 3px;
+  color: var(--color-brand-accent);
+  flex-shrink: 0;
+}
+
+.review-ticket__grid b {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--color-glass-text);
+  margin-bottom: 2px;
+}
+
+.review-ticket__grid span {
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.review-ticket__dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+}
+
+.review-ticket__date-chip {
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--color-glass);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  font-family: var(--font-mono);
+}
+
+.review-ticket__validity {
+  font-size: var(--text-xs);
+  color: var(--color-glass-text);
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 480px) {
+  .review-ticket__grid {
+    grid-template-columns: 1fr;
+  }
+}

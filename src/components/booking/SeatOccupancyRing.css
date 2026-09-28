@@ -1,0 +1,39 @@
+.seat-ring {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.seat-ring svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(0deg);
+}
+
+.seat-ring__track {
+  stroke: var(--color-seat-empty);
+}
+
+.seat-ring__fill {
+  stroke: var(--color-seat-filled);
+  transition: stroke-dashoffset var(--duration-slow) var(--ease-standard);
+}
+
+.seat-ring__fill.is-near-full {
+  stroke: var(--color-warning);
+}
+
+.seat-ring__fill.is-full {
+  stroke: var(--color-danger);
+}
+
+.seat-ring__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--color-text-primary);
+}

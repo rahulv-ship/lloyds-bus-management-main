@@ -1,0 +1,208 @@
+/* ============================================================
+   DESIGN TOKENS
+   Grounded in Lloyds Metals & Energy's actual business: an
+   iron-ore / DRI mining and steel company running its own
+   employee bus fleet. Palette is deliberately not generic-SaaS
+   blue: a deep ore-blue for ink/dark surfaces, steel-blue for
+   action, and a single warm "kiln amber" accent used sparingly
+   for active/route states only.
+
+   NOTE: --color-brand-* are placeholders grounded in the
+   company's industry, not sourced from an official brand
+   guideline (none was available). Swap these four values first
+   if Lloyds provides exact brand hex codes — nothing else in
+   the token system needs to change.
+============================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Brand -------------------------------------------- */
+  --color-brand-ink: #0f2a3d;        /* deep ore-blue, near-black */
+  --color-brand-primary: #1b5e8a;    /* steel-blue, primary actions */
+  --color-brand-primary-hover: #164b6f;
+  --color-brand-accent: #d97b2a;     /* kiln amber — sparing use only */
+  --color-brand-accent-soft: #f3d9bc;
+
+  /* ---- Surfaces ------------------------------------------ */
+  --color-bg: #eef1f4;               /* cold-steel white, not cream */
+  --color-bg-subtle: #e4e9ee;
+  --color-surface: rgba(255, 183, 178, 0.35);
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #f6f8fa;
+  --color-border: #dbe2e8;
+  --color-border-strong: #c3ccd4;
+
+  /* ---- Glass overlays ------------------------------------- */
+  --color-glass: rgba(255, 183, 178, 0.35);
+  --color-glass-strong: rgba(255, 183, 178, 0.5);
+  --color-glass-subtle: rgba(255, 183, 178, 0.12);
+  --color-glass-text: #fff5f5;
+
+  /* ---- Text ------------------------------------------------ */
+  --color-text-primary: #16232c;
+  --color-text-secondary: #56636d;
+  --color-text-tertiary: #8996a1;
+  --color-text-on-brand: #ffffff;
+  --color-text-on-accent: #2a1602;
+
+  /* ---- Semantic -------------------------------------------- */
+  --color-success: #1e8a5c;
+  --color-success-soft: #dcf3e7;
+  --color-warning: #b6790a;
+  --color-warning-soft: #faedd2;
+  --color-danger: #c1443a;
+  --color-danger-soft: #f9e1de;
+  --color-info: #1b5e8a;
+  --color-info-soft: #dcebf4;
+
+  /* ---- Transit accents (route lines, stops, occupancy) ----- */
+  --color-route-line: #1b5e8a;
+  --color-route-dot: #d97b2a;
+  --color-seat-filled: #1b5e8a;
+  --color-seat-empty: #dbe2e8;
+
+  /* ---- Typography -------------------------------------------- */
+  --font-display: 'Manrope', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2.0625rem;
+  --text-3xl: 2.75rem;
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* ---- Spacing scale ----------------------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ---- Radius -------------------------------------------------- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
+
+  /* ---- Elevation ------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(15, 42, 61, 0.06);
+  --shadow-sm: 0 2px 8px rgba(15, 42, 61, 0.08);
+  --shadow-md: 0 8px 24px rgba(15, 42, 61, 0.10);
+  --shadow-lg: 0 16px 48px rgba(15, 42, 61, 0.16);
+  --shadow-focus: 0 0 0 3px rgba(27, 94, 138, 0.35);
+
+  /* ---- Motion --------------------------------------------------- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --duration-fast: 140ms;
+  --duration-base: 220ms;
+  --duration-slow: 420ms;
+
+  /* ---- Layout ------------------------------------------------------ */
+  --sidebar-width: 264px;
+  --topbar-height: 64px;
+  --bottomnav-height: 64px;
+  --content-max-width: 1180px;
+}
+
+/* ================================================================
+   DARK THEME
+   Not an inversion: dark mode gets its own surface hierarchy
+   (three distinct elevations), a lifted primary blue for
+   sufficient contrast, and softer semantic fills so status
+   colors don't glare at night-shift users.
+================================================================ */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-brand-ink: #eaf1f8;
+  --color-brand-primary: #5ba3d9;
+  --color-brand-primary-hover: #7db8e3;
+  --color-brand-accent: #e69a4c;
+  --color-brand-accent-soft: #4a3319;
+
+  --color-bg: #0c1620;
+  --color-bg-subtle: #0a121a;
+  --color-surface: #131f2b;
+  --color-surface-raised: #182735;
+  --color-surface-sunken: #0e1922;
+  --color-border: #24384a;
+  --color-border-strong: #33495d;
+
+  --color-text-primary: #eaf1f8;
+  --color-text-secondary: #a3b3c2;
+  --color-text-tertiary: #71828f;
+  --color-text-on-brand: #ffffff;
+  --color-text-on-accent: #241304;
+
+  --color-success: #3fbf85;
+  --color-success-soft: #123526;
+  --color-warning: #e0a838;
+  --color-warning-soft: #3a2c0c;
+  --color-danger: #e2685c;
+  --color-danger-soft: #3a1a17;
+  --color-info: #5ba3d9;
+  --color-info-soft: #122a3a;
+
+  --color-route-line: #5ba3d9;
+  --color-route-dot: #e69a4c;
+  --color-seat-filled: #5ba3d9;
+  --color-seat-empty: #24384a;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 56px rgba(0, 0, 0, 0.55);
+  --shadow-focus: 0 0 0 3px rgba(91, 163, 217, 0.4);
+}
+
+/* System preference fallback for first-ever visit, before the
+   toggle has written an explicit choice to localStorage. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    color-scheme: dark;
+    --color-brand-ink: #eaf1f8;
+    --color-brand-primary: #5ba3d9;
+    --color-brand-primary-hover: #7db8e3;
+    --color-brand-accent: #e69a4c;
+    --color-brand-accent-soft: #4a3319;
+    --color-bg: #0c1620;
+    --color-bg-subtle: #0a121a;
+    --color-surface: #131f2b;
+    --color-surface-raised: #182735;
+    --color-surface-sunken: #0e1922;
+    --color-border: #24384a;
+    --color-border-strong: #33495d;
+    --color-text-primary: #eaf1f8;
+    --color-text-secondary: #a3b3c2;
+    --color-text-tertiary: #71828f;
+    --color-success: #3fbf85;
+    --color-success-soft: #123526;
+    --color-warning: #e0a838;
+    --color-warning-soft: #3a2c0c;
+    --color-danger: #e2685c;
+    --color-danger-soft: #3a1a17;
+    --color-info: #5ba3d9;
+    --color-info-soft: #122a3a;
+    --color-route-line: #5ba3d9;
+    --color-route-dot: #e69a4c;
+    --color-seat-filled: #5ba3d9;
+    --color-seat-empty: #24384a;
+  }
+}

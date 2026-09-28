@@ -1,0 +1,135 @@
+/* =========================================================
+   Employee App Shell
+   ========================================================= */
+
+.employee-shell {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg, #f7f8fb);
+  isolation: isolate;
+}
+
+/* =========================================================
+   Ambient background
+   ========================================================= */
+
+.employee-shell__bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.employee-shell__bg-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+}
+
+.employee-shell__bg-blob--a {
+  top: -18%;
+  left: -10%;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--color-brand-accent) 55%, transparent),
+    transparent 70%
+  );
+  animation: shell-float-a 22s ease-in-out infinite;
+}
+
+.employee-shell__bg-blob--b {
+  bottom: -22%;
+  right: -12%;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(
+    circle at center,
+    color-mix(in srgb, var(--color-info, #3b82f6) 45%, transparent),
+    transparent 72%
+  );
+  animation: shell-float-b 26s ease-in-out infinite;
+}
+
+.employee-shell__bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 78%);
+  opacity: 0.5;
+}
+
+@keyframes shell-float-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(30px, 20px, 0) scale(1.08); }
+}
+
+@keyframes shell-float-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(-30px, -18px, 0) scale(1.06); }
+}
+
+/* =========================================================
+   Main column
+   ========================================================= */
+
+.employee-shell__main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* =========================================================
+   Content area
+   ========================================================= */
+
+.employee-shell__content {
+  flex: 1;
+  padding: var(--space-6) 0 var(--space-10);
+  scroll-behavior: smooth;
+}
+
+/* Page wrapper inside AnimatePresence */
+.employee-shell__page {
+  display: block;
+  will-change: opacity, transform;
+}
+
+/* =========================================================
+   Responsive
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .employee-shell__content {
+    padding-bottom: calc(var(--bottomnav-height) + var(--space-6));
+  }
+
+  .employee-shell__bg-blob--a { width: 380px; height: 380px; }
+  .employee-shell__bg-blob--b { width: 400px; height: 400px; }
+  .employee-shell__bg-grid { background-size: 36px 36px; opacity: 0.4; }
+}
+
+@media (max-width: 560px) {
+  .employee-shell__content {
+    padding: var(--space-4) 0 calc(var(--bottomnav-height) + var(--space-5));
+  }
+}
+
+/* =========================================================
+   Reduced motion
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .employee-shell__bg-blob { animation: none; }
+  .employee-shell__content { scroll-behavior: auto; }
+}
