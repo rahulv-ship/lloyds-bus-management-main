@@ -4,7 +4,6 @@ import { Bus, MapPin, ShieldCheck } from 'lucide-react'
 import { formatDate } from '../../utils/format'
 import './DigitalPassCard.css'
 
-const VERSION = 'v1'
 
 function toBase64Url(str) {
   return btoa(unescape(encodeURIComponent(str)))
@@ -105,24 +104,23 @@ function normalizeApp(raw) {
 function buildPassPayload(n) {
   if (!n || !n.token) return null
 
-  const payload = {
-    t: n.token,
-    p: n.passNumber,
-    n: n.employeeName,
-    e: n.employeeCode,
-    d: n.department,
-    r: n.routeNumber,
-    rn: n.routeName,
-    b: n.busNumber,
-    s: n.shiftName,
-    pu: n.pickupName,
-    dr: n.dropName,
-    vf: n.validFrom,
-    vt: n.validTo,
-    ts: new Date().toISOString(),
-  }
+  const lines = [
+    'EMPLOYEE BUS PASS',
+    '-----------------',
+    `Pass No  : ${n.passNumber || '—'}`,
+    `Employee : ${n.employeeName || '—'}`,
+    `Emp ID   : ${n.employeeCode || '—'}`,
+    `Dept     : ${n.department || '—'}`,
+    `Route    : ${[n.routeNumber, n.routeName].filter(Boolean).join(' - ') || '—'}`,
+    `Bus      : ${n.busNumber || '—'}`,
+    `Shift    : ${n.shiftName || '—'}`,
+    `Pickup   : ${n.pickupName || '—'}`,
+    `Drop     : ${n.dropName || '—'}`,
+    `Valid    : ${formatDate(n.validFrom)} to ${formatDate(n.validTo)}`,
+    `Token    : ${n.token}`,
+  ]
 
-  return `BUSPASS:${VERSION}:${toBase64Url(JSON.stringify(payload))}`
+  return lines.join('\n')
 }
 
 export function parsePassPayload(raw) {
@@ -130,7 +128,7 @@ export function parsePassPayload(raw) {
   if (!raw.startsWith('BUSPASS:')) return null
 
   const [, version, b64] = raw.split(':')
-  if (version !== VERSION || !b64) return null
+  if (version !== 'v1' || !b64) return null
 
   try {
     return JSON.parse(fromBase64Url(b64))
@@ -170,10 +168,6 @@ export default function DigitalPassCard({ app: rawApp }) {
     if (!app) return
 
     const payload = buildPassPayload(app)
-
-    // TEMP DEBUG — remove once verified
-    console.log('[DigitalPassCard] normalized:', app)
-    console.log('[DigitalPassCard] payload preview:', payload?.slice(0, 100))
 
     if (!payload) {
       console.warn('[DigitalPassCard] Missing token. Raw app keys:', rawApp && Object.keys(rawApp))
