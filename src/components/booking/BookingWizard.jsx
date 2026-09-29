@@ -23,6 +23,11 @@ export default function BookingWizard({ onSubmitted, adminBooking = false }) {
     if (booking.notice) setAlert(booking.notice)
   }, [booking.notice])
 
+  const handleCloseAlert = () => {
+    setAlert('')
+    setNotice('')
+  }
+
   const handleSubmit = async () => {
     const success = await booking.submit()
     if (success) {
@@ -41,13 +46,13 @@ export default function BookingWizard({ onSubmitted, adminBooking = false }) {
         <div className="booking-hero__icon" aria-hidden="true">{adminBooking ? <Sparkles size={28} /> : <BusIcon size={28} />}</div>
       </section>
 
-      {booking.notice && !showSuccessModal && (
+      {alert && !showSuccessModal && (
         <AlertModal
-          open={Boolean(booking.notice)}
+          open={Boolean(alert)}
           title="Close box"
-          message={booking.notice}
+          message={alert}
           confirmLabel="Close"
-          onConfirm={() => setNotice('')}
+          onConfirm={handleCloseAlert}
         />
       )}
 

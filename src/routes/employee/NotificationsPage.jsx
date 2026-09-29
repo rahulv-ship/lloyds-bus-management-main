@@ -43,7 +43,7 @@ export default function NotificationsPage() {
             <div className="notifications-page__item-title">{item.title}</div>
             <div className="notifications-page__item-message">{item.message}</div>
             <div className="notifications-page__item-time">
-              {new Date(item.created_at).toLocaleString()}
+              {item.created_at ? new Date(item.created_at).toLocaleString() : '—'}
             </div>
           </div>
         ))}
@@ -56,7 +56,7 @@ export default function NotificationsPage() {
             <div className="notifications-page__item-title">{item.title}</div>
             <div className="notifications-page__item-message">{item.message}</div>
             <div className="notifications-page__item-time">
-              {new Date(item.created_at).toLocaleString()}
+              {item.created_at ? new Date(item.created_at).toLocaleString() : '—'}
             </div>
           </div>
         ))}

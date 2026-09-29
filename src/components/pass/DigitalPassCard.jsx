@@ -125,15 +125,38 @@ function buildPassPayload(n) {
 
 export function parsePassPayload(raw) {
   if (!raw || typeof raw !== 'string') return null
-  if (!raw.startsWith('BUSPASS:')) return null
 
-  const [, version, b64] = raw.split(':')
-  if (version !== 'v1' || !b64) return null
+  if (raw.startsWith('BUSPASS:')) {
+    const parts = raw.split(':')
+    if (parts[1] !== 'v1' || !parts[2]) return null
+    try {
+      return JSON.parse(fromBase64Url(parts[2]))
+    } catch {
+      return null
+    }
+  }
 
-  try {
-    return JSON.parse(fromBase64Url(b64))
-  } catch {
-    return null
+  const lines = raw.split('\n')
+  const get = (prefix) => {
+    const line = lines.find((l) => l.startsWith(prefix))
+    if (!line) return null
+    return line.split(':').slice(1).join(':').trim() || null
+  }
+
+  return {
+    token: get('Token'),
+    passNumber: get('Pass No'),
+    employeeName: get('Employee'),
+    employeeCode: get('Emp ID'),
+    department: get('Dept'),
+    routeNumber: get('Route'),
+    routeName: null,
+    busNumber: get('Bus'),
+    shiftName: get('Shift'),
+    pickupName: get('Pickup'),
+    dropName: get('Drop'),
+    validFrom: get('Valid'),
+    validTo: null,
   }
 }
 

@@ -37,7 +37,7 @@ export default function NotificationBell() {
                 <div className="notifications__item-title">{item.title}</div>
                 <div className="notifications__item-message">{item.message}</div>
                 <div className="notifications__item-time">
-                  {new Date(item.created_at).toLocaleString()}
+                  {item.created_at ? new Date(item.created_at).toLocaleString() : '—'}
                 </div>
               </div>
             ))}
