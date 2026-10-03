@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Bell, Bus, Home, IdCard, CalendarClock, UserRound } from 'lucide-react'
+import { Bell, Bus, Home, IdCard, CalendarClock, UserRound, AlertTriangle } from 'lucide-react'
 import './Sidebar.css'
 
 const NAV_ITEMS = [
@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { to: '/app/pass', label: 'My Pass', icon: IdCard },
   { to: '/app/bookings', label: 'My Bookings', icon: CalendarClock },
   { to: '/app/notifications', label: 'Notifications', icon: Bell },
+  { to: '/app/alerts', label: 'Alerts', icon: AlertTriangle },
   { to: '/app/profile', label: 'Profile', icon: UserRound },
 ]
 

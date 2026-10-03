@@ -12,6 +12,7 @@ const TITLES = {
   '/app/pass': 'My Pass',
   '/app/bookings': 'My Bookings',
   '/app/notifications': 'Notifications',
+  '/app/alerts': 'Alerts',
   '/app/profile': 'Profile',
 }
 

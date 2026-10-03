@@ -1,7 +1,7 @@
 import './SeatOccupancyRing.css'
 
 // capacity is always whatever the backend reports (52 by business rule,
-// but this component never hardcodes or assumes that number itself).
+
 export default function SeatOccupancyRing({ remaining, capacity, size = 44 }) {
   const filled = Math.max(0, capacity - remaining)
   const ratio = capacity > 0 ? filled / capacity : 0

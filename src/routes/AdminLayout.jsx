@@ -1,11 +1,21 @@
+import { useState } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
-import { LayoutDashboard, Database, FileSpreadsheet, ClipboardCheck, LogOut, ShieldCheck, TicketPlus, Map, Receipt } from 'lucide-react'
+import { LayoutDashboard, Database, FileSpreadsheet, ClipboardCheck, LogOut, ShieldCheck, TicketPlus, Map, Receipt, User, Settings, ChevronDown, AlertTriangle } from 'lucide-react'
 import ThemeToggle from '../components/layout/ThemeToggle'
+import AlertBell from '../components/layout/AlertBell'
 import { useSessionContext } from '../hooks/SessionContext'
 import './AdminLayout.css'
 
 export default function AdminLayout() {
-  const { logout } = useSessionContext()
+  const { session, logout } = useSessionContext()
+  const [open, setOpen] = useState(false)
+
+  const initials = (session?.user?.name || session?.user?.employee_name || 'A')
+    .split(' ')
+    .map((p) => p[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase()
 
   return (
     <div className="admin-shell">
@@ -17,10 +27,37 @@ export default function AdminLayout() {
         </div>
         <div className="admin-topbar__actions">
           <ThemeToggle />
-          <button type="button" className="admin-topbar__logout" onClick={logout}>
-            <LogOut size={16} aria-hidden="true" />
-            Sign out
-          </button>
+          <AlertBell />
+          <div className="admin-topbar__profile">
+            <button
+              type="button"
+              className="admin-topbar__avatar"
+              aria-expanded={open}
+              aria-haspopup="true"
+              onClick={() => setOpen((current) => !current)}
+            >
+              {initials}
+              <ChevronDown size={14} />
+            </button>
+
+            {open && (
+              <div className="admin-topbar__dropdown">
+                <NavLink className="admin-topbar__dropdown-item" to="/admin" onClick={() => setOpen(false)}>
+                  <User size={16} />
+                  <span>Profile</span>
+                </NavLink>
+                <button type="button" className="admin-topbar__dropdown-item" onClick={() => setOpen(false)}>
+                  <Settings size={16} />
+                  <span>Settings</span>
+                </button>
+                <div className="admin-topbar__dropdown-separator" />
+                <button type="button" className="admin-topbar__dropdown-item admin-topbar__dropdown-item--danger" onClick={() => { setOpen(false); logout(); }}>
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
       <nav className="admin-nav" aria-label="Administration navigation">
@@ -31,6 +68,7 @@ export default function AdminLayout() {
         <NavLink to="/admin/billing"><Receipt size={16} /> Billing</NavLink>
         <NavLink to="/admin/master-data"><Database size={16} /> Master data</NavLink>
         <NavLink to="/admin/master-report"><FileSpreadsheet size={16} /> Master report</NavLink>
+        <NavLink to="/app/alerts"><AlertTriangle size={16} /> Alerts</NavLink>
       </nav>
       <main className="container admin-shell__content">
         <Outlet />

@@ -10,6 +10,7 @@ import BookBusPage from './routes/employee/BookBusPage'
 import MyPassPage from './routes/employee/MyPassPage'
 import MyBookingsPage from './routes/employee/MyBookingsPage'
 import NotificationsPage from './routes/employee/NotificationsPage'
+import AlertsPage from './routes/employee/AlertsPage'
 import ProfilePage from './routes/employee/ProfilePage'
 import ApprovalsPage from './routes/admin/ApprovalsPage'
 import AdminDashboardPage from './routes/admin/AdminDashboardPage'
@@ -52,6 +53,7 @@ function AppRoutes() {
         <Route path="pass" element={<MyPassPage />} />
         <Route path="bookings" element={<MyBookingsPage />} />
         <Route path="notifications" element={<NotificationsPage />} />
+        <Route path="alerts" element={<AlertsPage />} />
         <Route path="profile" element={<ProfilePage />} />
       </Route>
 
