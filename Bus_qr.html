@@ -1,0 +1,1719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lloyds Metals - Employee Transportation</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-red: #D32F2F;
+            --dark-red: #B71C1C;
+            --dark-bg: #1A1A1A;
+            --light-bg: #F5F6F8;
+            --white: #FFFFFF;
+            --text-dark: #333333;
+            --text-gray: #757575;
+            --border-color: #E0E0E0;
+            --success-green: #E8F5E9;
+            --success-text: #2E7D32;
+            --blue: #1976D2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           MOBILE APP VIEW (Default Styles)
+           ========================================= */
+        .app-container {
+            width: 100%;
+            height: 100vh;
+            background-color: var(--white);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main Scrollable Content */
+        .app-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px;
+            background-color: var(--light-bg);
+        }
+        
+        .app-content::-webkit-scrollbar { display: none; }
+
+        /* Header */
+        .header {
+            background-color: var(--white);
+        }
+        .logo-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .logo-placeholder {
+            background-color: #000;
+            color: white;
+            padding: 5px 10px;
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            border-left: 5px solid var(--primary-red);
+        }
+        .notification-icon {
+            position: relative;
+            font-size: 18px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+        .notification-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-red);
+            border-radius: 50%;
+            border: 2px solid var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-red), var(--dark-red));
+            color: var(--white);
+            padding: 20px 15px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 150px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path d="M0 50 L10 20 L20 20 L20 50 M30 50 L30 10 L40 10 L40 50 M50 50 L50 30 L60 30 L60 50" stroke="rgba(0,0,0,0.3)" stroke-width="2" fill="none"/></svg>') no-repeat bottom right;
+            background-size: cover;
+            opacity: 0.5;
+        }
+        .hero h1 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+        .hero p {
+            font-size: 12px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 15px;
+        }
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        /* Next Ride Card */
+        .next-ride-card {
+            margin-top: -20px;
+            z-index: 2;
+            position: relative;
+        }
+        .ride-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .bus-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .bus-icon-box {
+            background: var(--dark-bg);
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+        }
+        .bus-info h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .bus-info p {
+            font-size: 11px;
+            color: var(--text-gray);
+        }
+        .badge-confirmed {
+            background: var(--primary-red);
+            color: var(--white);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        /* Route Section */
+        .ride-route {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .route-line {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 5px;
+        }
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-red);
+        }
+        .dash {
+            width: 1px;
+            height: 20px;
+            background: repeating-linear-gradient(to bottom, var(--text-gray) 0, var(--text-gray) 2px, transparent 2px, transparent 4px);
+            margin: 2px 0;
+        }
+        .route-text {
+            flex: 1;
+        }
+        .route-text .destination-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .route-text .destination-group:last-child {
+            margin-bottom: 0;
+        }
+        .route-text p {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0;
+        }
+        .route-text p span {
+            font-size: 10px;
+            color: var(--text-gray);
+            font-weight: 400;
+            display: block;
+        }
+        
+        /* GPS Icon Button */
+        .gps-icon-btn {
+            background: #E3F2FD;
+            color: var(--blue);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .gps-icon-btn:hover {
+            background: #BBDEFB;
+            transform: scale(1.1);
+        }
+
+        .ride-image-container {
+            position: absolute;
+            right: 10px;
+            top: 60px;
+            width: 140px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 0;
+            opacity: 0.9;
+        }
+        .ride-image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
+        }
+
+        .ride-footer {
+            display: flex;
+            gap: 20px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .time-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .time-box i {
+            color: var(--dark-bg);
+            font-size: 14px;
+        }
+        .time-box div p:first-child {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .time-box div p:last-child {
+            font-size: 10px;
+            color: var(--text-gray);
+        }
+
+        /* Bus Details Card */
+        .details-image {
+            width: 100%;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 10px;
+        }
+        .details-footer {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+            padding-top: 10px;
+        }
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        .detail-item i {
+            color: var(--text-gray);
+            font-size: 12px;
+        }
+
+        /* Today's Schedule */
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .view-all {
+            font-size: 11px;
+            color: var(--primary-red);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.2s;
+            gap: 10px;
+        }
+        .schedule-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .schedule-time {
+            width: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            padding-top: 2px;
+        }
+        .schedule-time span {
+            display: block;
+            font-size: 9px;
+            color: var(--text-gray);
+            font-weight: 400;
+        }
+        
+        .schedule-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .schedule-dest-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .schedule-dest-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .schedule-dest-text i {
+            font-size: 10px;
+            color: var(--text-gray);
+        }
+        .schedule-dest-text span {
+            font-size: 9px;
+            color: var(--text-gray);
+            font-weight: 400;
+            display: block;
+        }
+        
+        .status-badge {
+            font-size: 9px;
+            font-weight: 600;
+            padding: 3px 6px;
+            border-radius: 12px;
+            background: var(--success-green);
+            color: var(--success-text);
+            text-transform: uppercase;
+            align-self: flex-start;
+        }
+        
+        .schedule-gps-btn {
+            background: #E3F2FD;
+            color: var(--blue);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            flex-shrink: 0;
+        }
+        .schedule-gps-btn:hover {
+            background: #BBDEFB;
+            transform: scale(1.1);
+        }
+        .schedule-gps-btn i {
+            font-size: 10px;
+        }
+
+        /* Quick Actions */
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .action-btn {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 12px 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        .action-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            color: var(--white);
+        }
+        .action-btn:nth-child(1) .action-icon { background: var(--dark-bg); }
+        .action-btn:nth-child(2) .action-icon { background: var(--primary-red); }
+        .action-btn:nth-child(3) .action-icon { background: var(--dark-bg); }
+        .action-btn:nth-child(4) .action-icon { background: var(--primary-red); }
+        
+        .action-btn span {
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-dark);
+            text-align: center;
+        }
+
+        /* =========================================
+           BOTTOM NAVIGATION - QR IN CENTER
+           ========================================= */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-color);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 20;
+            padding: 0 8px;
+        }
+
+        /* Left group of nav items */
+        .nav-group-left {
+            display: flex;
+            flex: 1;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Right group of nav items */
+        .nav-group-right {
+            display: flex;
+            flex: 1;
+            justify-content: space-evenly;
+            align-items: center;
+            height: 100%;
+        }
+
+        /* Center QR button wrapper */
+        .nav-center-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 70px;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-gray);
+            font-size: 10px;
+            cursor: pointer;
+            transition: color 0.2s;
+            padding: 4px 0;
+            min-width: 50px;
+        }
+        .nav-item i {
+            font-size: 18px;
+        }
+        .nav-item.active {
+            color: var(--primary-red);
+            font-weight: 600;
+        }
+        
+        /* Center QR Floating Action Button - PERFECTLY CENTERED */
+        .nav-fab-center {
+            width: 56px;
+            height: 56px;
+            background: var(--primary-red);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+            font-size: 24px;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.45);
+            transform: translateY(-22px);
+            border: 4px solid var(--white);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            z-index: 21;
+        }
+        .nav-fab-center:hover {
+            box-shadow: 0 6px 16px rgba(211, 47, 47, 0.6);
+        }
+        .nav-fab-center:active {
+            transform: translateY(-22px) scale(0.92);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: absolute;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+            white-space: nowrap;
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* =========================================
+           MODALS
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--white);
+            flex-shrink: 0;
+        }
+        .modal-header h3 {
+            font-size: 16px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-header h3 i {
+            color: var(--blue);
+        }
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-modal:hover {
+            color: var(--primary-red);
+        }
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        /* Map Modal Specifics */
+        .map-modal-body {
+            padding: 0;
+            height: 400px;
+            background: #e5e5e5;
+        }
+        .map-modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .map-modal-footer {
+            padding: 15px 20px;
+            background: var(--white);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+        .map-modal-footer span strong {
+            color: var(--text-dark);
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        .form-group select, .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group select:focus, .form-group input:focus {
+            border-color: var(--primary-red);
+        }
+        .btn-primary {
+            width: 100%;
+            background: var(--primary-red);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-primary:hover {
+            background: var(--dark-red);
+        }
+
+        /* Notification List */
+        .notification-list {
+            list-style: none;
+        }
+        .notification-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .notification-item:last-child {
+            border-bottom: none;
+        }
+        .notif-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #E3F2FD;
+            color: var(--blue);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+        .notif-content h4 {
+            font-size: 13px;
+            color: var(--text-dark);
+            margin-bottom: 3px;
+        }
+        .notif-content p {
+            font-size: 11px;
+            color: var(--text-gray);
+            line-height: 1.4;
+        }
+        .notif-time {
+            font-size: 10px;
+            color: #999;
+            margin-top: 5px;
+            display: block;
+        }
+
+        /* Profile Styling */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--dark-bg);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            margin: 0 auto 10px;
+        }
+        .profile-header h2 {
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+        .profile-header p {
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+        .profile-details {
+            background: var(--light-bg);
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .profile-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        .profile-row:last-child {
+            border-bottom: none;
+        }
+        .profile-row span:first-child {
+            color: var(--text-gray);
+        }
+        .profile-row span:last-child {
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        /* QR Code */
+        .qr-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .qr-box {
+            width: 220px;
+            height: 220px;
+            background: #fff;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+        .qr-box img {
+            width: 100%;
+            height: 100%;
+        }
+        .qr-hint {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 5px;
+        }
+        .qr-empid {
+            font-size: 12px;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* =========================================
+           DESKTOP / WEB VIEW (Media Queries)
+           ========================================= */
+        @media (min-width: 1024px) {
+            body {
+                background-color: var(--light-bg);
+                display: block;
+            }
+
+            .app-container {
+                height: auto;
+                min-height: 100vh;
+                background-color: transparent;
+                overflow: visible;
+                display: block;
+            }
+
+            .bottom-nav {
+                position: sticky;
+                top: 0;
+                height: 70px;
+                background: var(--white);
+                border-top: none;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                justify-content: center;
+                gap: 40px;
+                padding: 0 40px;
+                flex-wrap: nowrap;
+            }
+
+            .nav-group-left, .nav-group-right {
+                display: contents;
+            }
+
+            .nav-center-wrapper {
+                display: none;
+            }
+            
+            .nav-item {
+                flex-direction: row;
+                gap: 10px;
+                font-size: 14px;
+                width: auto;
+                padding: 10px 15px;
+                border-radius: 8px;
+            }
+            .nav-item:hover {
+                background-color: #f0f0f0;
+                color: var(--primary-red);
+            }
+            .nav-item.active {
+                background-color: #ffebee;
+            }
+
+            /* Show QR nav item on desktop */
+            .nav-item.qr-nav {
+                display: flex !important;
+            }
+
+            .nav-fab-center {
+                display: none; 
+            }
+
+            .app-content {
+                padding-bottom: 0;
+                background-color: var(--light-bg);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .header {
+                background-color: var(--white);
+                box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            }
+            .logo-bar {
+                max-width: 1200px;
+                margin: 0 auto;
+                width: 100%;
+                padding: 20px 40px;
+                border-bottom: none;
+            }
+            .logo-placeholder {
+                font-size: 16px;
+                padding: 10px 15px;
+            }
+            .logo-placeholder span {
+                font-size: 10px !important;
+            }
+            .notification-icon {
+                font-size: 24px;
+            }
+            
+            .hero {
+                padding: 40px 40px 80px;
+                text-align: center;
+            }
+            .hero h1 {
+                font-size: 36px;
+                margin-bottom: 10px;
+            }
+            .hero p {
+                font-size: 18px;
+            }
+
+            .main-grid {
+                max-width: 1200px;
+                margin: -50px auto 40px;
+                padding: 0 40px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .next-ride-card {
+                margin-top: 0;
+            }
+
+            .card {
+                padding: 25px;
+                margin-bottom: 25px;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            }
+            .card:hover {
+                box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            }
+
+            .section-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            .bus-info h3 { font-size: 18px; }
+            .bus-info p { font-size: 14px; }
+            .badge-confirmed { font-size: 12px; padding: 6px 12px; }
+            
+            .route-text p { font-size: 16px; margin-bottom: 20px; }
+            .route-text p span { font-size: 12px; }
+            .dash { height: 30px; }
+            
+            .time-box div p:first-child { font-size: 16px; }
+            .time-box div p:last-child { font-size: 12px; }
+            
+            .ride-image-container {
+                right: 30px;
+                top: 80px;
+                width: 220px;
+                height: 120px;
+            }
+
+            .details-image {
+                height: 150px;
+            }
+            .detail-item { font-size: 13px; }
+            .detail-item i { font-size: 16px; }
+
+            .schedule-item { padding: 15px 0; }
+            .schedule-time { font-size: 16px; width: 80px; }
+            .schedule-time span { font-size: 12px; }
+            .schedule-dest-text { font-size: 15px; }
+            .schedule-dest-text span { font-size: 11px; }
+            .schedule-gps-btn { width: 28px; height: 28px; }
+            .schedule-gps-btn i { font-size: 12px; }
+            .status-badge { font-size: 11px; padding: 4px 8px; }
+
+            .quick-actions-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            .action-btn {
+                padding: 25px 15px;
+                gap: 15px;
+            }
+            .action-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+                border-radius: 12px;
+            }
+            .action-btn span {
+                font-size: 14px;
+            }
+
+            .toast {
+                bottom: 40px;
+                font-size: 14px;
+                padding: 15px 30px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .desktop-columns {
+                display: grid;
+                grid-template-columns: 1.2fr 1fr;
+                gap: 30px;
+            }
+            
+            .col-left, .col-right {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- Desktop Top Navigation (Transforms from Mobile Bottom Nav) -->
+        <div class="bottom-nav">
+            <!-- LEFT GROUP -->
+            <div class="nav-group-left">
+                <div class="nav-item active" onclick="switchTab(this)">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </div>
+                <div class="nav-item" onclick="switchTab(this)">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Bookings</span>
+                </div>
+            </div>
+
+            <!-- CENTER QR BUTTON (Mobile only) -->
+            <div class="nav-center-wrapper">
+                <div class="nav-fab-center" onclick="openQRModal()">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+            </div>
+
+            <!-- RIGHT GROUP -->
+            <div class="nav-group-right">
+                <div class="nav-item" onclick="switchTab(this)">
+                    <i class="far fa-bell"></i>
+                    <span>Notifications</span>
+                </div>
+                <div class="nav-item" onclick="switchTab(this)">
+                    <i class="far fa-user"></i>
+                    <span>Profile</span>
+                </div>
+            </div>
+
+            <!-- QR nav item for DESKTOP (hidden on mobile) -->
+            <div class="nav-item qr-nav" onclick="openQRModal()" style="display: none;">
+                <i class="fas fa-qrcode"></i>
+                <span>Scan QR</span>
+            </div>
+        </div>
+
+        <!-- Main Scrollable Area -->
+        <div class="app-content">
+            
+            <!-- Header -->
+            <div class="header">
+                <div class="logo-bar">
+                    <div class="logo-placeholder">LLOYDS METALS <br><span style="font-size: 6px; color: #aaa;">AND ENERGY LIMITED</span></div>
+                    <div class="notification-icon" onclick="openNotificationsModal()">
+                        <i class="far fa-bell"></i>
+                    </div>
+                </div>
+                <div class="hero">
+                    <h1>Employee Transportation</h1>
+                    <p>Safe. Reliable. On time.</p>
+                </div>
+            </div>
+
+            <!-- Desktop Layout Wrapper -->
+            <div class="main-grid">
+                
+                <!-- Left Column (Next Ride & Bus Details) -->
+                <div class="col-left">
+                    <!-- Next Ride Section -->
+                    <div class="section" style="padding: 0;">
+                        <h2 class="section-title" style="margin-top: 15px;">My Next Ride</h2>
+                        
+                        <h2 class="section-title" style="margin-bottom: 25px;"></h2>
+                        <div class="card next-ride-card">
+                            <div class="ride-header">
+                                <div class="bus-info">
+                                    <div class="bus-icon-box"><i class="fas fa-bus"></i></div>
+                                    <div>
+                                        <h3>Tata Marco Polo Bus</h3>
+                                        <p>52 Seater</p>
+                                    </div>
+                                </div>
+                                <div class="badge-confirmed">Confirmed</div>
+                            </div>
+
+                            <!-- Updated Route Section with Start & End Destinations + GPS Icon -->
+                            <div class="ride-route">
+                                <div class="route-line">
+                                    <div class="dot"></div>
+                                    <div class="dash"></div>
+                                    <div class="dot" style="background: var(--dark-bg);"></div>
+                                </div>
+                                <div class="route-text">
+                                    <div class="destination-group">
+                                        <p>Lloyds Colony <span>Start Point</span></p>
+                                        <button class="gps-icon-btn" onclick="openMapModal('Lloyds Colony', 'Steel Plant Main Gate')" title="View on Map">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="destination-group">
+                                        <p>Steel Plant Main Gate <span>End Destination</span></p>
+                                        <button class="gps-icon-btn" onclick="openMapModal('Lloyds Colony', 'Steel Plant Main Gate')" title="View on Map">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bus Image -->
+                            <div class="ride-image-container">
+                                <img src="Bus_view.png" alt="Lloyds Metals Bus Front">
+                            </div>
+
+                            <div class="ride-footer">
+                                <div class="time-box">
+                                    <i class="far fa-clock"></i>
+                                    <div>
+                                        <p>07:30 AM</p>
+                                        <p>Pickup Time</p>
+                                    </div>
+                                </div>
+                                <div class="time-box">
+                                    <i class="fas fa-flag-checkered"></i>
+                                    <div>
+                                        <p>07:50 AM</p>
+                                        <p>Drop Time</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bus Details Section -->
+                    <div class="section" style="padding: 0;">
+                        <h2 class="section-title">Bus Details</h2>
+                        <div class="card">
+                            <img src="Bus_details.png" alt="Bus Details" class="details-image">
+                            <div class="details-footer">
+                                <div class="detail-item">
+                                    <i class="fas fa-user-friends"></i>
+                                    <div>
+                                        <div>52 Seater</div>
+                                        <div style="font-weight: 400; color: var(--text-gray);">Tata Marco Polo</div>
+                                    </div>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-id-card"></i>
+                                    <div>
+                                        <div>MH 34 AB 1234</div>
+                                        <div style="font-weight: 400; color: var(--text-gray);">Registration No.</div>
+                                    </div>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-user-circle"></i>
+                                    <div>
+                                        <div>Rahul Verma</div>
+                                        <div style="font-weight: 400; color: var(--text-gray);">Driver</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column (Schedule & Quick Actions) -->
+                <div class="col-right">
+                    <!-- Today's Schedule -->
+                    <div class="section" style="padding: 0; margin-top: 15px;">
+                        <div class="schedule-header">
+                            <h2 class="section-title" style="margin-bottom: 0;">Today's Schedule</h2>
+                            <div class="view-all" onclick="openFullScheduleModal()">View Full Schedule <i class="fas fa-chevron-right" style="font-size: 9px;"></i></div>
+                        </div>
+                        <div class="card" style="padding: 10px 15px;">
+                            
+                            <!-- Schedule Item 1 -->
+                            <div class="schedule-item" onclick="selectSchedule(this)">
+                                <div class="schedule-time">07:30 AM <span>Pickup</span></div>
+                                <div class="schedule-details">
+                                    <div class="schedule-dest-group">
+                                        <div class="schedule-dest-text">
+                                            <i class="fas fa-circle" style="font-size: 6px; color: var(--primary-red);"></i>
+                                            <div>Lloyds Colony <span>Near Main Gate</span></div>
+                                        </div>
+                                        <button class="schedule-gps-btn" onclick="event.stopPropagation(); openMapModal('Lloyds Colony', 'Steel Plant Main Gate')" title="View on Map">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="schedule-dest-group">
+                                        <div class="schedule-dest-text">
+                                            <i class="fas fa-circle" style="font-size: 6px; color: var(--dark-bg);"></i>
+                                            <div>Steel Plant Main Gate <span>End Destination</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-badge">On Time</div>
+                            </div>
+
+                            <!-- Schedule Item 2 -->
+                            <div class="schedule-item" onclick="selectSchedule(this)">
+                                <div class="schedule-time">12:30 PM <span>Pickup</span></div>
+                                <div class="schedule-details">
+                                    <div class="schedule-dest-group">
+                                        <div class="schedule-dest-text">
+                                            <i class="fas fa-circle" style="font-size: 6px; color: var(--primary-red);"></i>
+                                            <div>Steel Plant <span>Admin Building</span></div>
+                                        </div>
+                                        <button class="schedule-gps-btn" onclick="event.stopPropagation(); openMapModal('Steel Plant Admin Building', 'Lloyds Colony')" title="View on Map">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="schedule-dest-group">
+                                        <div class="schedule-dest-text">
+                                            <i class="fas fa-circle" style="font-size: 6px; color: var(--dark-bg);"></i>
+                                            <div>Lloyds Colony <span>End Destination</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-badge">On Time</div>
+                            </div>
+
+                            <!-- Schedule Item 3 -->
+                            <div class="schedule-item" onclick="selectSchedule(this)">
+                                <div class="schedule-time">06:15 PM <span>Pickup</span></div>
+                                <div class="schedule-details">
+                                    <div class="schedule-dest-group">
+                                        <div class="schedule-dest-text">
+                                            <i class="fas fa-circle" style="font-size: 6px; color: var(--primary-red);"></i>
+                                            <div>Steel Plant <span>Main Gate</span></div>
+                                        </div>
+                                        <button class="schedule-gps-btn" onclick="event.stopPropagation(); openMapModal('Steel Plant Main Gate', 'Lloyds Colony')" title="View on Map">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </button>
+                                    </div>
+                                    <div class="schedule-dest-group">
+                                        <div class="schedule-dest-text">
+                                            <i class="fas fa-circle" style="font-size: 6px; color: var(--dark-bg);"></i>
+                                            <div>Lloyds Colony <span>End Destination</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="status-badge">On Time</div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="section" style="padding: 0; padding-bottom: 20px;">
+                        <h2 class="section-title">Quick Actions</h2>
+                        <div class="quick-actions-grid">
+                            <div class="action-btn" onclick="openBookSeatModal()">
+                                <div class="action-icon"><i class="fas fa-couch"></i></div>
+                                <span>Book Seat</span>
+                            </div>
+                            <div class="action-btn" onclick="openMyBookingsModal()">
+                                <div class="action-icon"><i class="fas fa-calendar-alt"></i></div>
+                                <span>My Bookings</span>
+                            </div>
+                            <div class="action-btn" onclick="openMapModal('Current Location', 'Steel Plant Main Gate')">
+                                <div class="action-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <span>Track Bus</span>
+                            </div>
+                            <div class="action-btn" onclick="openSupportModal()">
+                                <div class="action-icon"><i class="fas fa-headset"></i></div>
+                                <span>Support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast" id="toast">Action Triggered</div>
+
+    </div>
+
+    <!-- =========================================
+         MODALS
+         ========================================= -->
+    
+    <!-- MAP MODAL -->
+    <div class="modal-overlay" id="mapModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-map-marked-alt"></i> Live Bus Tracking</h3>
+                <button class="close-modal" onclick="closeModal('mapModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body map-modal-body">
+                <iframe 
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=79.25%2C19.90%2C79.35%2C19.98&amp;layer=mapnik&amp;marker=19.9445%2C79.2880" 
+                    style="border: none;">
+                </iframe>
+            </div>
+            <div class="map-modal-footer">
+                <span>Start: <strong id="modalStart">Lloyds Colony</strong></span>
+                <span>End: <strong id="modalEnd">Steel Plant Main Gate</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOOK SEAT MODAL -->
+    <div class="modal-overlay" id="bookingModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-couch"></i> Book a Seat</h3>
+                <button class="close-modal" onclick="closeModal('bookingModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Select Route</label>
+                    <select>
+                        <option>Lloyds Colony → Steel Plant Main Gate (07:30 AM)</option>
+                        <option>Steel Plant Admin Building → Lloyds Colony (12:30 PM)</option>
+                        <option>Steel Plant Main Gate → Lloyds Colony (06:15 PM)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Select Seat Preference</label>
+                    <select>
+                        <option>Window</option>
+                        <option>Aisle</option>
+                        <option>Any</option>
+                    </select>
+                </div>
+                <button class="btn-primary" onclick="closeModal('bookingModal'); showToast('Seat Booked Successfully!');">Confirm Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MY BOOKINGS MODAL -->
+    <div class="modal-overlay" id="myBookingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-calendar-alt"></i> My Bookings</h3>
+                <button class="close-modal" onclick="closeModal('myBookingsModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="box-shadow: none; border: 1px solid var(--border-color); margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="font-size: 13px;">TRIP-1256</strong>
+                        <span class="status-badge">Confirmed</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 5px;">Lloyds Colony → Steel Plant</p>
+                    <p style="font-size: 11px; color: var(--text-dark); font-weight: 500;">23 May 2025, 07:30 AM</p>
+                </div>
+                <div class="card" style="box-shadow: none; border: 1px solid var(--border-color); margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <strong style="font-size: 13px;">TRIP-1257</strong>
+                        <span class="status-badge">Confirmed</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-gray); margin-bottom: 5px;">Steel Plant → Lloyds Colony</p>
+                    <p style="font-size: 11px; color: var(--text-dark); font-weight: 500;">23 May 2025, 06:15 PM</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUPPORT MODAL -->
+    <div class="modal-overlay" id="supportModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-headset"></i> Support</h3>
+                <button class="close-modal" onclick="closeModal('supportModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="notification-item" style="border-bottom: none; padding: 0 0 15px 0;">
+                    <div class="notif-icon" style="background: #E3F2FD; color: #1976D2;"><i class="fas fa-phone"></i></div>
+                    <div class="notif-content">
+                        <h4>Call Transport Desk</h4>
+                        <p>+91 12345 67890</p>
+                    </div>
+                </div>
+                <div class="notification-item" style="border-bottom: none; padding: 0 0 15px 0;">
+                    <div class="notif-icon" style="background: #E8F5E9; color: #2E7D32;"><i class="fas fa-envelope"></i></div>
+                    <div class="notif-content">
+                        <h4>Email Support</h4>
+                        <p>transport@lloyds.in</p>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Describe your issue</label>
+                    <input type="text" placeholder="Enter issue details...">
+                </div>
+                <button class="btn-primary" onclick="closeModal('supportModal'); showToast('Support ticket submitted!');">Submit Ticket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR CODE MODAL -->
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-qrcode"></i> Scan to Board</h3>
+                <button class="close-modal" onclick="closeModal('qrModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body qr-container">
+                <div class="qr-box">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=LloydsMetalsEmployeeTransport-LM45892" alt="QR Code">
+                </div>
+                <p class="qr-hint">Show this QR code to the driver</p>
+                <span class="qr-empid">Employee ID: LM-45892</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS MODAL -->
+    <div class="modal-overlay" id="notificationsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="far fa-bell"></i> Notifications</h3>
+                <button class="close-modal" onclick="closeModal('notificationsModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <ul class="notification-list">
+                    <li class="notification-item">
+                        <div class="notif-icon"><i class="fas fa-bus"></i></div>
+                        <div class="notif-content">
+                            <h4>Bus Approaching</h4>
+                            <p>Your bus MH 34 AB 1234 is 5 minutes away from Lloyds Colony.</p>
+                            <span class="notif-time">Just now</span>
+                        </div>
+                    </li>
+                    <li class="notification-item">
+                        <div class="notif-icon" style="background: #FFF3E0; color: #E65100;"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="notif-content">
+                            <h4>Delay Alert</h4>
+                            <p>Bus MH 34 AB 7890 delayed by 15 mins due to heavy traffic.</p>
+                            <span class="notif-time">10 mins ago</span>
+                        </div>
+                    </li>
+                    <li class="notification-item">
+                        <div class="notif-icon" style="background: #E8F5E9; color: #2E7D32;"><i class="fas fa-check-circle"></i></div>
+                        <div class="notif-content">
+                            <h4>Trip Completed</h4>
+                            <p>You have successfully completed the trip TRIP-1255.</p>
+                            <span class="notif-time">2 hours ago</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="far fa-user"></i> My Profile</h3>
+                <button class="close-modal" onclick="closeModal('profileModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-header">
+                    <div class="profile-avatar"><i class="fas fa-user"></i></div>
+                    <h2>Rahul Verma</h2>
+                    <p>Employee ID: LM-45892</p>
+                </div>
+                <div class="profile-details">
+                    <div class="profile-row">
+                        <span>Department</span>
+                        <span>Operations</span>
+                    </div>
+                    <div class="profile-row">
+                        <span>Shift</span>
+                        <span>General (9AM - 6PM)</span>
+                    </div>
+                    <div class="profile-row">
+                        <span>Phone</span>
+                        <span>+91 98765 43210</span>
+                    </div>
+                    <div class="profile-row">
+                        <span>Email</span>
+                        <span>rahul.v@lloyds.in</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FULL SCHEDULE MODAL -->
+    <div class="modal-overlay" id="fullScheduleModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-calendar-day"></i> Full Schedule - Today</h3>
+                <button class="close-modal" onclick="closeModal('fullScheduleModal')"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="card" style="box-shadow: none; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="font-size: 13px;">07:30 AM</strong>
+                        <span class="status-badge">On Time</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-dark);">Lloyds Colony → Steel Plant Main Gate</p>
+                </div>
+                <div class="card" style="box-shadow: none; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="font-size: 13px;">12:30 PM</strong>
+                        <span class="status-badge">On Time</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-dark);">Steel Plant Admin → Lloyds Colony</p>
+                </div>
+                <div class="card" style="box-shadow: none; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <strong style="font-size: 13px;">06:15 PM</strong>
+                        <span class="status-badge">On Time</span>
+                    </div>
+                    <p style="font-size: 12px; color: var(--text-dark);">Steel Plant Main Gate → Lloyds Colony</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
+    <script>
+        // --- TOAST NOTIFICATION ---
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // --- NAVIGATION TAB SWITCHING (opens modals for Bookings/Notifications/Profile) ---
+        function switchTab(element) {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+            
+            const tabName = element.querySelector('span').textContent;
+            
+            if (tabName === 'Bookings') {
+                openMyBookingsModal();
+            } else if (tabName === 'Notifications') {
+                openNotificationsModal();
+            } else if (tabName === 'Profile') {
+                openProfileModal();
+            } else if (tabName === 'Scan QR') {
+                openQRModal();
+            } else {
+                document.querySelector('.app-content').scrollTop = 0;
+                showToast('Home');
+            }
+        }
+
+        // --- SCHEDULE SELECTION ---
+        function selectSchedule(element) {
+            const schedules = document.querySelectorAll('.schedule-item');
+            schedules.forEach(item => {
+                item.style.backgroundColor = 'transparent';
+                item.style.borderRadius = '0';
+            });
+            element.style.backgroundColor = '#f9f9f9';
+            element.style.borderRadius = '8px';
+            
+            const time = element.querySelector('.schedule-time').childNodes[0].nodeValue.trim();
+            const location = element.querySelector('.schedule-dest-text div').childNodes[0].nodeValue.trim();
+            showToast(`Selected: ${time} from ${location}`);
+        }
+
+        // --- MODAL MANAGEMENT ---
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // --- MAP MODAL ---
+        function openMapModal(startLocation, endLocation) {
+            document.getElementById('modalStart').textContent = startLocation;
+            document.getElementById('modalEnd').textContent = endLocation;
+            openModal('mapModal');
+        }
+
+        // --- SPECIFIC MODAL OPENERS ---
+        function openBookSeatModal() {
+            openModal('bookingModal');
+        }
+
+        function openMyBookingsModal() {
+            openModal('myBookingsModal');
+        }
+
+        function openSupportModal() {
+            openModal('supportModal');
+        }
+
+        function openQRModal() {
+            openModal('qrModal');
+        }
+
+        function openNotificationsModal() {
+            openModal('notificationsModal');
+        }
+
+        function openProfileModal() {
+            openModal('profileModal');
+        }
+
+        function openFullScheduleModal() {
+            openModal('fullScheduleModal');
+        }
+
+        // --- CLOSE MODAL ON OUTSIDE CLICK ---
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(event) {
+                if (event.target === overlay) {
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // --- TOAST POSITION ADJUSTMENT ---
+        function adjustToastPosition() {
+            const toast = document.getElementById('toast');
+            if (window.innerWidth >= 1024) {
+                toast.style.bottom = '40px';
+            } else {
+                toast.style.bottom = '90px';
+            }
+        }
+        window.addEventListener('resize', adjustToastPosition);
+        adjustToastPosition();
+
+        // --- SHOW QR NAV ITEM ON DESKTOP ---
+        function handleResponsiveQR() {
+            const qrNav = document.querySelector('.qr-nav');
+            if (window.innerWidth >= 1024) {
+                qrNav.style.display = 'flex';
+            } else {
+                qrNav.style.display = 'none';
+            }
+        }
+        window.addEventListener('resize', handleResponsiveQR);
+        handleResponsiveQR();
+    </script>
+</body>
+</html>
