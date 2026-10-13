@@ -1,0 +1,722 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Home,
+  Zap,
+  QrCode,
+  Bell,
+  Armchair,
+  Calendar,
+  MapPin,
+  Headset,
+  User,
+  LogOut,
+  Bus,
+  Clock,
+  Flag,
+  Users,
+  IdCard,
+  CircleUser,
+  X,
+  ChevronRight,
+  Phone,
+  Mail,
+  CircleCheck,
+  TriangleAlert,
+  Map,
+  CalendarDays,
+} from 'lucide-react';
+import './App.css';
+
+/* ============================================
+   IMAGES — served from public/
+   ============================================ */
+const IMAGES = {
+  logo: '/Logo.png',
+  busDetails: '/Bus_details.png',
+  busView: '/Bus_view.png',
+};
+
+/* ============================================
+   MAIN APP COMPONENT
+   ============================================ */
+function App() {
+  // ---------- UI STATE ----------
+  const [activeTab, setActiveTab] = useState('Home');
+  const [showQADropdown, setShowQADropdown] = useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
+  const [toast, setToast] = useState({ show: false, message: '' });
+  const [modal, setModal] = useState(null); // 'map' | 'booking' | 'myBookings' | 'support' | 'qr' | 'notifications' | 'profile' | 'fullSchedule'
+  const [mapEndpoints, setMapEndpoints] = useState({ start: 'Lloyds Colony', end: 'Steel Plant Main Gate' });
+
+  const qaTabRef = useRef(null);
+  const profileBtnRef = useRef(null);
+
+  // ---------- TOAST ----------
+  const showToast = (message) => {
+    setToast({ show: true, message });
+    setTimeout(() => setToast({ show: false, message: '' }), 2500);
+  };
+
+  // ---------- DROPDOWN OUTSIDE CLICK ----------
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (qaTabRef.current && !qaTabRef.current.contains(event.target)) {
+        setShowQADropdown(false);
+      }
+      if (profileBtnRef.current && !profileBtnRef.current.contains(event.target)) {
+        setShowProfileDropdown(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  // ---------- HANDLERS ----------
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+    if (tab === 'My Pass') setModal('qr');
+    else if (tab === 'Profile') setModal('profile');
+    else setModal(null);
+  };
+
+  const handleToggleQA = (e) => {
+    e.stopPropagation();
+    setShowProfileDropdown(false);
+    setShowQADropdown((v) => !v);
+  };
+
+  const handleToggleProfile = (e) => {
+    e.stopPropagation();
+    setShowQADropdown(false);
+    setShowProfileDropdown((v) => !v);
+  };
+
+  const handleLogout = () => {
+    setShowProfileDropdown(false);
+    if (window.confirm('Are you sure you want to logout?')) {
+      showToast('Logged out successfully');
+    }
+  };
+
+  const handleSelectSchedule = (id) => {
+    setSelectedSchedule(id);
+    const item = scheduleData.find((s) => s.id === id);
+    if (item) showToast(`Selected: ${item.time} from ${item.fromLocation}`);
+  };
+
+  const openMapModal = (start, end) => {
+    setMapEndpoints({ start, end });
+    setModal('map');
+  };
+
+  const closeModal = () => setModal(null);
+
+  const handleQuickAction = (action) => {
+    setShowQADropdown(false);
+    switch (action) {
+      case 'bookSeat': setModal('booking'); break;
+      case 'myBookings': setModal('myBookings'); break;
+      case 'trackBus': openMapModal('Current Location', 'Steel Plant Main Gate'); break;
+      case 'support': setModal('support'); break;
+      default: break;
+    }
+  };
+
+  // ---------- DATA ----------
+  const scheduleData = [
+    {
+      id: 1,
+      time: '07:30 AM',
+      period: 'Pickup',
+      fromLocation: 'Lloyds Colony',
+      fromSub: 'Near Main Gate',
+      toLocation: 'Steel Plant Main Gate',
+      toSub: 'End Destination',
+      status: 'On Time',
+    },
+    {
+      id: 2,
+      time: '12:30 PM',
+      period: 'Pickup',
+      fromLocation: 'Steel Plant',
+      fromSub: 'Admin Building',
+      toLocation: 'Lloyds Colony',
+      toSub: 'End Destination',
+      status: 'On Time',
+    },
+    {
+      id: 3,
+      time: '06:15 PM',
+      period: 'Pickup',
+      fromLocation: 'Steel Plant',
+      fromSub: 'Main Gate',
+      toLocation: 'Lloyds Colony',
+      toSub: 'End Destination',
+      status: 'On Time',
+    },
+  ];
+
+  /* ============================================
+     RENDER
+     ============================================ */
+  return (
+    <div className="app-container">
+      {/* ============ TOP BAR ============ */}
+      <div className="top-bar">
+        <div className="top-bar-left">
+          <div className="logo-image">
+            <img
+              src={IMAGES.logo}
+              alt="Lloyds Metals Logo"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextElementSibling.style.display = 'block';
+              }}
+            />
+            <div className="logo-placeholder" style={{ display: 'none' }}>
+              LLOYDS METALS <br />
+              <span style={{ fontSize: '6px', color: '#aaa' }}>AND ENERGY LIMITED</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="top-bar-right">
+          <div className="top-nav-tabs">
+            <div
+              className={`top-nav-item ${activeTab === 'Home' ? 'active' : ''}`}
+              onClick={() => handleTabClick('Home')}
+            >
+              <Home size={16} />
+              <span>Home</span>
+            </div>
+
+            <div
+              ref={qaTabRef}
+              className={`top-nav-item qa-tab ${showQADropdown ? 'open' : ''}`}
+              onClick={handleToggleQA}
+            >
+              <Zap size={16} />
+              <span>Quick Actions</span>
+            </div>
+
+            <div
+              className={`top-nav-item ${activeTab === 'My Pass' ? 'active' : ''}`}
+              onClick={() => handleTabClick('My Pass')}
+            >
+              <QrCode size={16} />
+              <span>My Pass</span>
+            </div>
+          </div>
+
+          <div className="notification-icon" onClick={() => setModal('notifications')}>
+            <Bell size={20} />
+          </div>
+
+          <div
+            ref={profileBtnRef}
+            className="profile-avatar-btn"
+            onClick={handleToggleProfile}
+            title="Account"
+          >
+            RV
+          </div>
+        </div>
+      </div>
+
+      {/* ============ QUICK ACTIONS DROPDOWN ============ */}
+      {showQADropdown && (
+        <div className="quick-actions-dropdown show">
+          <div className="qa-dropdown-header">
+            <h4>
+              <Zap size={14} /> Quick Actions
+            </h4>
+          </div>
+          <div className="qa-dropdown-item" onClick={() => handleQuickAction('bookSeat')}>
+            <div className="qa-icon"><Armchair size={15} /></div>
+            <span>Book Seat</span>
+          </div>
+          <div className="qa-dropdown-item" onClick={() => handleQuickAction('myBookings')}>
+            <div className="qa-icon"><Calendar size={15} /></div>
+            <span>My Bookings</span>
+          </div>
+          <div className="qa-dropdown-item" onClick={() => handleQuickAction('trackBus')}>
+            <div className="qa-icon"><MapPin size={15} /></div>
+            <span>Track Bus</span>
+          </div>
+          <div className="qa-dropdown-item" onClick={() => handleQuickAction('support')}>
+            <div className="qa-icon"><Headset size={15} /></div>
+            <span>Support</span>
+          </div>
+        </div>
+      )}
+
+      {/* ============ PROFILE DROPDOWN ============ */}
+      {showProfileDropdown && (
+        <div className="profile-dropdown show">
+          <div className="profile-dropdown-header">
+            <div className="avatar-sm">RV</div>
+            <div className="user-info">
+              <h4>Rahul Verma</h4>
+              <p>LM-45892</p>
+            </div>
+          </div>
+          <div
+            className="profile-dropdown-item"
+            onClick={() => { setModal('profile'); setShowProfileDropdown(false); }}
+          >
+            <User size={16} />
+            <span>My Profile</span>
+          </div>
+          <div
+            className="profile-dropdown-item"
+            onClick={() => { setModal('myBookings'); setShowProfileDropdown(false); }}
+          >
+            <Calendar size={16} />
+            <span>My Bookings</span>
+          </div>
+          <div
+            className="profile-dropdown-item"
+            onClick={() => { setModal('support'); setShowProfileDropdown(false); }}
+          >
+            <Headset size={16} />
+            <span>Support</span>
+          </div>
+          <div className="profile-dropdown-divider"></div>
+          <div className="profile-dropdown-item logout" onClick={handleLogout}>
+            <LogOut size={16} />
+            <span>Logout</span>
+          </div>
+        </div>
+      )}
+
+      {/* ============ MAIN CONTENT ============ */}
+      <div className="app-content">
+        <div className="hero">
+          <h1>Employee Transportation</h1>
+          <p>Safe. Reliable. On time.</p>
+        </div>
+
+        <div className="main-grid">
+          {/* ---------- LEFT COLUMN ---------- */}
+          <div className="col-left">
+            {/* My Next Ride */}
+            <div className="section" style={{ padding: 0 }}>
+              <h2 className="section-title-dark">My Next Ride</h2>
+              <div className="card next-ride-card">
+                <div className="ride-header">
+                  <div className="bus-info">
+                    <div className="bus-icon-box"><Bus size={16} /></div>
+                    <div>
+                      <h3>Tata Marco Polo Bus</h3>
+                      <p>52 Seater</p>
+                    </div>
+                  </div>
+                  <div className="ride-header-right">
+                    <div className="badge-confirmed">Confirmed</div>
+                    <button
+                      className="gps-icon-btn"
+                      onClick={() => openMapModal('Lloyds Colony', 'Steel Plant Main Gate')}
+                      title="View on Map"
+                    >
+                      <MapPin size={13} />
+                      <span>GPS</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="ride-route">
+                  <div className="route-line">
+                    <div className="dot"></div>
+                    <div className="dash"></div>
+                    <div className="dot" style={{ background: 'var(--dark-bg)' }}></div>
+                  </div>
+                  <div className="route-text">
+                    <div className="destination-group">
+                      <p>Lloyds Colony <span>Start Point</span></p>
+                    </div>
+                    <div className="destination-group">
+                      <p>Steel Plant Main Gate <span>End Destination</span></p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="ride-image-container">
+                  <img src={IMAGES.busDetails} alt="Lloyds Metals Bus Front" />
+                </div>
+
+                <div className="ride-footer">
+                  <div className="time-box">
+                    <Clock size={14} />
+                    <div>
+                      <p>07:30 AM</p>
+                      <p>Pickup Time</p>
+                    </div>
+                  </div>
+                  <div className="time-box">
+                    <Flag size={14} />
+                    <div>
+                      <p>07:50 AM</p>
+                      <p>Drop Time</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bus Details */}
+            <div className="section" style={{ padding: 0 }}>
+              <h2 className="section-title-dark">Bus Details</h2>
+              <div className="card">
+                <img src={IMAGES.busView} alt="Bus Details" className="details-image" />
+                <div className="details-footer">
+                  <div className="detail-item">
+                    <Users size={13} />
+                    <div>
+                      <div>52 Seater</div>
+                      <div style={{ fontWeight: 400, color: 'var(--text-gray)' }}>Tata Marco Polo</div>
+                    </div>
+                  </div>
+                  <div className="detail-item">
+                    <IdCard size={13} />
+                    <div>
+                      <div>MH 34 AB 1234</div>
+                      <div style={{ fontWeight: 400, color: 'var(--text-gray)' }}>Registration No.</div>
+                    </div>
+                  </div>
+                  <div className="detail-item">
+                    <CircleUser size={13} />
+                    <div>
+                      <div>Rahul Verma</div>
+                      <div style={{ fontWeight: 400, color: 'var(--text-gray)' }}>Driver</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ---------- RIGHT COLUMN ---------- */}
+          <div className="col-right">
+            <div className="section" style={{ padding: 0 }}>
+              <h2 className="section-title-dark">Today's Schedule</h2>
+              <div className="schedule-full-page">
+                <div className="schedule-header">
+                  <h2 className="section-title">Today's Schedule</h2>
+                  <div className="view-all" onClick={() => setModal('fullSchedule')}>
+                    View Full <ChevronRight size={12} />
+                  </div>
+                </div>
+
+                {scheduleData.map((item) => (
+                  <div
+                    key={item.id}
+                    className="schedule-item"
+                    onClick={() => handleSelectSchedule(item.id)}
+                    style={
+                      selectedSchedule === item.id
+                        ? { backgroundColor: '#f9f9f9', borderRadius: '8px' }
+                        : {}
+                    }
+                  >
+                    <div className="schedule-time">
+                      {item.time} <span>{item.period}</span>
+                    </div>
+                    <div className="schedule-details">
+                      <div className="schedule-dest-group">
+                        <div className="schedule-dest-text">
+                          <span className="dest-dot" style={{ background: 'var(--primary-red)' }} />
+                          <div>
+                            {item.fromLocation} <span>{item.fromSub}</span>
+                          </div>
+                        </div>
+                        <button
+                          className="schedule-gps-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openMapModal(item.fromLocation, item.toLocation);
+                          }}
+                          title="View on Map"
+                        >
+                          <MapPin size={12} />
+                          <span>GPS</span>
+                        </button>
+                      </div>
+                      <div className="schedule-dest-group">
+                        <div className="schedule-dest-text">
+                          <span className="dest-dot" style={{ background: 'var(--dark-bg)' }} />
+                          <div>
+                            {item.toLocation} <span>{item.toSub}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="status-badge">{item.status}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ============ BOTTOM NAV (Mobile) ============ */}
+      <div className="bottom-nav">
+        <div className="nav-group-left">
+          <div className="nav-item active" onClick={() => handleTabClick('Home')}>
+            <Home size={20} />
+            <span>Home</span>
+          </div>
+        </div>
+        <div className="nav-center-wrapper">
+          <div className="nav-fab-center" onClick={() => setModal('qr')}>
+            <QrCode size={26} />
+          </div>
+        </div>
+        <div className="nav-group-right">
+          <div className="nav-item" onClick={() => setModal('profile')}>
+            <CircleUser size={20} />
+            <span>Profile</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ============ TOAST ============ */}
+      <div className={`toast ${toast.show ? 'show' : ''}`}>{toast.message}</div>
+
+      {/* ============ MODALS ============ */}
+      {modal === 'map' && (
+        <Modal onClose={closeModal} fullscreen>
+          <div className="modal-header">
+            <h3><Map size={18} /> Live Bus Tracking</h3>
+            <button className="close-modal" onClick={closeModal}><X size={18} /></button>
+          </div>
+          <div className="modal-body map-modal-body">
+            <iframe
+              src="https://www.openstreetmap.org/export/embed.html?bbox=79.25%2C19.90%2C79.35%2C19.98&amp;layer=mapnik&amp;marker=19.9445%2C79.2880"
+              style={{ border: 'none' }}
+              title="Live Map"
+            ></iframe>
+          </div>
+          <div className="map-modal-footer">
+            <span>Start: <strong>{mapEndpoints.start}</strong></span>
+            <span>End: <strong>{mapEndpoints.end}</strong></span>
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'booking' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={Armchair} title="Book a Seat" onClose={closeModal} />
+          <div className="modal-body">
+            <div className="form-group">
+              <label>Select Route</label>
+              <select>
+                <option>Lloyds Colony → Steel Plant Main Gate (07:30 AM)</option>
+                <option>Steel Plant Admin Building → Lloyds Colony (12:30 PM)</option>
+                <option>Steel Plant Main Gate → Lloyds Colony (06:15 PM)</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Select Seat Preference</label>
+              <select>
+                <option>Window</option>
+                <option>Aisle</option>
+                <option>Any</option>
+              </select>
+            </div>
+            <button
+              className="btn-primary"
+              onClick={() => { closeModal(); showToast('Seat Booked Successfully!'); }}
+            >
+              Confirm Booking
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'myBookings' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={Calendar} title="My Bookings" onClose={closeModal} />
+          <div className="modal-body">
+            <BookingCard tripId="TRIP-1256" route="Lloyds Colony → Steel Plant" date="23 May 2025, 07:30 AM" />
+            <BookingCard tripId="TRIP-1257" route="Steel Plant → Lloyds Colony" date="23 May 2025, 06:15 PM" />
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'support' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={Headset} title="Support" onClose={closeModal} />
+          <div className="modal-body">
+            <div className="notification-item" style={{ borderBottom: 'none', padding: '0 0 15px 0' }}>
+              <div className="notif-icon" style={{ background: '#E3F2FD', color: '#1976D2' }}>
+                <Phone size={17} />
+              </div>
+              <div className="notif-content">
+                <h4>Call Transport Desk</h4>
+                <p>+91 12345 67890</p>
+              </div>
+            </div>
+            <div className="notification-item" style={{ borderBottom: 'none', padding: '0 0 15px 0' }}>
+              <div className="notif-icon" style={{ background: '#E8F5E9', color: '#2E7D32' }}>
+                <Mail size={17} />
+              </div>
+              <div className="notif-content">
+                <h4>Email Support</h4>
+                <p>transport@lloyds.in</p>
+              </div>
+            </div>
+            <div className="form-group" style={{ marginTop: 20 }}>
+              <label>Describe your issue</label>
+              <input type="text" placeholder="Enter issue details..." />
+            </div>
+            <button
+              className="btn-primary"
+              onClick={() => { closeModal(); showToast('Support ticket submitted!'); }}
+            >
+              Submit Ticket
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'qr' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={QrCode} title="Scan to Board" onClose={closeModal} />
+          <div className="modal-body qr-container">
+            <div className="qr-box">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=LloydsMetalsEmployeeTransport-LM45892"
+                alt="QR Code"
+              />
+            </div>
+            <p className="qr-hint">Show this QR code to the driver</p>
+            <span className="qr-empid">Employee ID: LM-45892</span>
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'notifications' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={Bell} title="Notifications" onClose={closeModal} />
+          <div className="modal-body">
+            <ul className="notification-list">
+              <NotificationItem
+                icon={Bus}
+                title="Bus Approaching"
+                text="Your bus MH 34 AB 1234 is 5 minutes away from Lloyds Colony."
+                time="Just now"
+              />
+              <NotificationItem
+                icon={TriangleAlert}
+                iconBg="#FFF3E0"
+                iconColor="#E65100"
+                title="Delay Alert"
+                text="Bus MH 34 AB 7890 delayed by 15 mins due to heavy traffic."
+                time="10 mins ago"
+              />
+              <NotificationItem
+                icon={CircleCheck}
+                iconBg="#E8F5E9"
+                iconColor="#2E7D32"
+                title="Trip Completed"
+                text="You have successfully completed the trip TRIP-1255."
+                time="2 hours ago"
+              />
+            </ul>
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'profile' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={User} title="My Profile" onClose={closeModal} />
+          <div className="modal-body">
+            <div className="profile-header">
+              <div className="profile-avatar"><CircleUser size={36} /></div>
+              <h2>Rahul Verma</h2>
+              <p>Employee ID: LM-45892</p>
+            </div>
+            <div className="profile-details">
+              <div className="profile-row"><span>Department</span><span>Operations</span></div>
+              <div className="profile-row"><span>Shift</span><span>General (9AM - 6PM)</span></div>
+              <div className="profile-row"><span>Phone</span><span>+91 98765 43210</span></div>
+              <div className="profile-row"><span>Email</span><span>rahul.v@lloyds.in</span></div>
+            </div>
+          </div>
+        </Modal>
+      )}
+
+      {modal === 'fullSchedule' && (
+        <Modal onClose={closeModal}>
+          <ModalHeader icon={CalendarDays} title="Full Schedule - Today" onClose={closeModal} />
+          <div className="modal-body">
+            <ScheduleCard time="07:30 AM" route="Lloyds Colony → Steel Plant Main Gate" />
+            <ScheduleCard time="12:30 PM" route="Steel Plant Admin → Lloyds Colony" />
+            <ScheduleCard time="06:15 PM" route="Steel Plant Main Gate → Lloyds Colony" />
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+/* ============================================
+   REUSABLE COMPONENTS
+   ============================================ */
+const Modal = ({ children, onClose, fullscreen }) => (
+  <div
+    id={fullscreen ? 'mapModal' : undefined}
+    className="modal-overlay active"
+    onClick={(e) => e.target === e.currentTarget && onClose()}
+    style={fullscreen ? { padding: 0 } : {}}
+  >
+    <div className="modal-content" style={fullscreen ? { borderRadius: 0 } : {}}>
+      {children}
+    </div>
+  </div>
+);
+
+const ModalHeader = ({ icon: Icon, title, onClose }) => (
+  <div className="modal-header">
+    <h3><Icon size={18} /> {title}</h3>
+    <button className="close-modal" onClick={onClose}><X size={18} /></button>
+  </div>
+);
+
+const BookingCard = ({ tripId, route, date }) => (
+  <div className="card" style={{ boxShadow: 'none', border: '1px solid var(--border-color)', marginBottom: 15 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+      <strong style={{ fontSize: 13 }}>{tripId}</strong>
+      <span className="status-badge">Confirmed</span>
+    </div>
+    <p style={{ fontSize: 12, color: 'var(--text-gray)', marginBottom: 5 }}>{route}</p>
+    <p style={{ fontSize: 11, color: 'var(--text-dark)', fontWeight: 500 }}>{date}</p>
+  </div>
+);
+
+const NotificationItem = ({ icon: Icon, title, text, time, iconBg, iconColor }) => (
+  <li className="notification-item">
+    <div className="notif-icon" style={{ background: iconBg || '#E3F2FD', color: iconColor || 'var(--blue)' }}>
+      <Icon size={17} />
+    </div>
+    <div className="notif-content">
+      <h4>{title}</h4>
+      <p>{text}</p>
+      <span className="notif-time">{time}</span>
+    </div>
+  </li>
+);
+
+const ScheduleCard = ({ time, route }) => (
+  <div className="card" style={{ boxShadow: 'none', border: '1px solid var(--border-color)', marginBottom: 12 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+      <strong style={{ fontSize: 13 }}>{time}</strong>
+      <span className="status-badge">On Time</span>
+    </div>
+    <p style={{ fontSize: 12, color: 'var(--text-dark)' }}>{route}</p>
+  </div>
+);
+
+export default App;
